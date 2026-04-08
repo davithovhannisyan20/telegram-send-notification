@@ -1,6 +1,6 @@
 import os
 import requests
-from datetime import datetime
+import time
 
 
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
@@ -25,7 +25,7 @@ def send_telegram_message(html_message: str) -> dict:
 
 def build_html_message() -> str:
     """Build a sample HTML-formatted Telegram message."""
-    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+    now = time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime())
 
     return (
         "🔔 <b>Notification Alert</b>\n"
