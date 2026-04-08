@@ -23,6 +23,22 @@ def send_telegram_message(html_message: str) -> dict:
     return response.json()
 
 
+def send_telegram_photo_url(image_url: str, caption: str = "") -> dict:
+    """Send a photo via URL."""
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendPhoto"
+
+    payload = {
+        "chat_id": TELEGRAM_CHAT_ID,
+        "photo": image_url,
+        "caption": caption,
+        "parse_mode": "HTML",
+    }
+
+    response = requests.post(url, json=payload, timeout=10)
+    response.raise_for_status()
+    return response.json()
+
+
 def build_html_message() -> str:
     """Build a sample HTML-formatted Telegram message."""
     now = time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime())
@@ -45,7 +61,8 @@ def main():
     print("Sending Telegram notification...")
 
     message = build_html_message()
-    result = send_telegram_message(message)
+    # result = send_telegram_message(message)
+    result = send_telegram_photo_url('https://cdn.pixabay.com/photo/2015/04/19/08/32/flower-729510_1280.jpg', 'flower')
 
     if result.get("ok"):
         msg_id = result["result"]["message_id"]
